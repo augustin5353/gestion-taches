@@ -28,4 +28,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+Route::resource('taches', \App\Http\Controllers\TacheController::class)->except(['store']) ->middleware('auth');
+Route::post('taches/create', [\App\Http\Controllers\TacheController::class, 'store'])->middleware('auth')->name('taches.store');
+
 require __DIR__.'/auth.php';
