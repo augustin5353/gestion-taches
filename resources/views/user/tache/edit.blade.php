@@ -41,16 +41,28 @@
                 'value' => $tache->finish_at,
         ])
 
+        
         <div class="form-group form-check-inline">
 
-            <input class="form-check-input" type="radio" name="level" id="immediate" value="immediate"  @checked($tache->level == 'immediate')> 
-            <label class="form-check-label" for="immediate">Urgent</label>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="level" id="immediate" value="immediate" @checked($tache->level == 'immediate')>
+                <label class="form-check-label" for="immediate">Urgent</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="level" id="important" value="important" @checked($tache->level == 'important') @checked($tache->id == null)>
+                <label class="form-check-label" for="important">Important</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="level" id="lower" value="low" @checked($tache->level == 'low')>
+                <label class="form-check-label" for="lower">Pas urgent</label>
+            </div>
+        
+        </div>
 
-            <input class="form-check-input" type="radio" name="level" id="important" value="important" @checked($tache->level == 'important') @checked($tache == null)>
-            <label class="form-check-label" for="important">Important</label>
+        
 
-            <input class="form-check-input" type="radio" name="level" id="lower" value="lower" @checked($tache->level == 'low') >
-            <label class="form-check-label" for="lower">Pas urgent</label>
+        <div class=" form-group">
+
         </div>
 
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExportDataController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TacheController;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,12 @@ Route::resource('/taches', TacheController::class)->middleware('auth')->except([
 Route::get('/terminees', [TacheController::class, 'tachesTerminees'])->middleware('auth')->name('taches.terminees');
 Route::get('/en_cours', [TacheController::class, 'tachesEncours'])->middleware('auth')->name('taches.en_cours');
 Route::get('/a_venir', [TacheController::class, 'tachesAVenir'])->middleware('auth')->name('taches.a_venir');
+
+Route::put('/taches/{id}/finish', [TacheController::class, 'marqueToFinish'])->middleware('auth')->name('taches.marque.finish');
+Route::put('/taches/{id}/begin', [TacheController::class, 'marqueToBegin'])->middleware('auth')->name('taches.marque.begin');
+
+Route::get('/tasks-export', [ExportDataController::class, 'downloadView'])->name('export.view');
+Route::get('/tasks-export/tache_pdf', [ExportDataController::class, 'exportTachePdf'])->name('export.tache.pdf');
 //Route::get('/terminees', [TacheController::class, 'tachesTerminees'])->middleware('auth')->name('taches.terminees');
 
 

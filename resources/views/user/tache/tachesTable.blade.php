@@ -52,10 +52,15 @@
                         <a href="{{ route('taches.edit', ['tach' => $tache->id ]) }}" class="btn btn-primary">Editer</a>
                         {{-- Pour vérifier si l'utilisateur a le droit avant d'afficher le bouton --}}
 
-                            <form action="{{ route('taches.destroy', $tache->id) }}" method="post">
-                            @csrf
-                            @method('delete')
+                          <form action="{{ route('taches.destroy', $tache->id) }}" method="post">
+                                @csrf
+                                @method('delete')
                                 <button class="btn btn-danger">Supprimer</button>
+                            </form>
+                          <form action="{{ route('taches.marque.finish', $tache->id) }}" method="post">
+                                @csrf
+                                @method('put')
+                                <button class="btn btn-success">MCT</button>
                             </form>
                             
                     </div>
@@ -69,5 +74,3 @@
 
     </tbody>
 </table>
-
-{{ $taches->links() }}
