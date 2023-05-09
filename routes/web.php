@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TacheController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,7 +30,12 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::resource('taches', \App\Http\Controllers\TacheController::class)->except(['store']) ->middleware('auth');
-Route::post('taches/create', [\App\Http\Controllers\TacheController::class, 'store'])->middleware('auth')->name('taches.store');
+Route::resource('/taches', TacheController::class)->middleware('auth')->except(['show']);
+
+Route::get('/terminees', [TacheController::class, 'tachesTerminees'])->middleware('auth')->name('taches.terminees');
+Route::get('/en_cours', [TacheController::class, 'tachesEncours'])->middleware('auth')->name('taches.en_cours');
+Route::get('/a_venir', [TacheController::class, 'tachesAVenir'])->middleware('auth')->name('taches.a_venir');
+//Route::get('/terminees', [TacheController::class, 'tachesTerminees'])->middleware('auth')->name('taches.terminees');
+
 
 require __DIR__.'/auth.php';

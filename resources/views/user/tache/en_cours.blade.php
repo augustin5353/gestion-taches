@@ -1,14 +1,12 @@
 @extends('base')
+
 @section('title')
-    Mes taches
+    Taches en cours
+    
 @endsection
 
-@section('content')
-    
 @section('content')
 
 @include('user.tache.tachesTable')
-
     
-@endsection
 @endsection

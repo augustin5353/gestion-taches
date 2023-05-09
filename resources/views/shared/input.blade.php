@@ -19,7 +19,7 @@
     @if ($type === 'textarea')
     <textarea class="form-control @error($name)
         is-invalid
-        @enderror" type="{{ $type }}" 
+        @enderror" type="{{ $type }}"  
         id="{{ $name }}" name="{{ $name }}"
         >{{ old($name, $value)}}</textarea>
     @else

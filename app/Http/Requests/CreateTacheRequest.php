@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateTacheRequest extends FormRequest
@@ -21,12 +22,13 @@ class CreateTacheRequest extends FormRequest
      */
     public function rules(): array
     {
+    
         return [
             'name' => ['required','string', 'min:5'],
             'description' => ['required','string', 'min:5'],
             'level' => ['required'],
             'begin_at' => ['date'],
-            'finish_at' => ['date'],
+            'finish_at' => ['date',],
         ];
     }
 }
