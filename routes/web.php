@@ -16,10 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -43,6 +39,8 @@ Route::get('/taches/statistiques', [TacheController::class, 'statistiques'])->mi
 
 Route::get('/tasks-export', [ExportDataController::class, 'downloadView'])->name('export.view');
 Route::get('/tasks-export/tache_pdf', [ExportDataController::class, 'exportTachePdf'])->name('export.tache.pdf');
+Route::get('/tasks-export/tache_excel', [ExportDataController::class, 'exportTacheExcel'])->name('export.tache.excel');
+Route::post('/tasks-export', [ExportDataController::class, 'exportData'])->name('export.tache');
 //Route::get('/terminees', [TacheController::class, 'tachesTerminees'])->middleware('auth')->name('taches.terminees');
 
 

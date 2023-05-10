@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TachesExport;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ExportDataController extends Controller
 {
@@ -18,6 +20,23 @@ class ExportDataController extends Controller
             'taches' => $taches
         ]);
     }
+    public function exportTacheExcel()
+    {
+
+
+        //telechargement direct du ficheir
+        //return Excel::download(new TachesExport, 'taches.xlsx');
+
+        //sous format csv
+
+        $user = User::find(Auth::id());
+        $taches = $user->taches()->get(); 
+
+        return Excel::download(new TachesExport, 'taches.csv', \Maatwebsite\Excel\Excel::CSV);
+
+    }
+
+
     public function exportTachePdf()
     {
         $user = User::find(Auth::id());
@@ -34,9 +53,41 @@ class ExportDataController extends Controller
 
 
         //pour faire e télechargement une fois que user clique
-        //return $pdf->download('taches.pdf');
+        return $pdf->download('taches.pdf');
 
         //pévisualiser le pdf, san télécharger
-        return $pdf->stream('taches.pdf');
+        
+    }
+
+    public function exportData(Request $request){
+
+        $user = User::find(Auth::id());
+
+        $taches = $user->taches()->whereNotNull('finished_at')->get();
+
+        $tachesEnCours = $user->taches()->whereNull('finished_at')->whereNotNull('beginned_at')->get();
+
+        $option = $request->input('donnees')=='terminees' && $request->input('format')=='pdf';
+
+            switch ($option) {
+            case ($request->input('donnees')=='terminees' && $request->input('format')=='pdf'):
+                $pdf = Pdf::loadView('user.exportData.pdf.taches', [
+                    'taches' => $taches
+                ]);
+
+                return $pdf->download('taches.pdf');
+            case 2:
+                echo "Option 2 sélectionnée";
+                break;
+            case 3:
+                echo "Option 3 sélectionnée";
+                break;
+            default:
+                echo "Option non valide";
+                break;
+            }
+
+        
+
     }
 }

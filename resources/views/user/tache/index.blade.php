@@ -12,7 +12,7 @@ $route = request()->route()->getName();
     $route = request()->route()->getName();
 ?>
 
-<div class="d-flex justify-content-between align-items-center">
+<div class="d-flex justify-content-between align-items-center my-5">
     <a href="{{ route('taches.index') }}" class="@if ($route == 'taches.index')
         text-dark
     @endif">Toutes mes taches</a>
@@ -28,6 +28,7 @@ $route = request()->route()->getName();
     <a href="{{ route('taches.a_venir') }}" class="@if ($route == 'taches.a_venir')
     text-dark
     @endif">Taches à venir</a>
+    <a href="{{ route('export.view') }}" class="">Exporter les données</a>
 
     
 </div>

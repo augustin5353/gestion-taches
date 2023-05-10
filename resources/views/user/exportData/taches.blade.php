@@ -1,77 +1,60 @@
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-#customers {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
+@extends('base')
 
-#customers td, #customers th {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
+@section('titlr')
+    "Exporter les données"
+@endsection
 
-#customers tr:nth-child(even){background-color: #f2f2f2;}
+@section('content')
+<h1>@yield('title')</h1>
 
-#customers tr:hover {background-color: #ddd;}
+<div class="d-flex justify-content-between">
+    <div><a href="{{ route('export.tache.pdf')}}">Télécharger le pdf</a></div>
+    <div><a href="{{ route('export.tache.excel')}}">Télécharger le excel</a></div>
+</div>
 
-#customers th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #04AA6D;
-  color: white;
-}
-</style>
+<form class="vstack gap-3" action="{{ route('export.tache') }}" method="post" enctype="multipart/form-data">
 
-{{-- saut de page --}}
-<style>
-  .page-break {
-      page-break-after: always;
-  }
-</style>
+  @csrf
+  @method('post')
 
-</head>
-<body>
+  <div class="form-group form-check-inline my-5">
 
-<h1>Liste de vos taches</h1>
-
-<a href="{{ route('export.tache.pdf')}}">Télécharger</a>
-
-<table id="customers">
-  <tr>
-    <th>Numéro</th>
-    <th>Nom de la tache</th>
-    <th>Detail</th>
-    <th>Niveau</th>
-    <th>Date debut</th>
-    <th>Date fin</th>
-  </tr>
-
-  @forelse ($taches as $tache)
-    <tr>
-
-      <td>{{ $tache->id }}</td>
-      <td>{{ $tache->name }}</td>
-      <td>{{ $tache->description }}</td>
-      <td>{{ $tache->level }}</td>
-      <td>{{ $tache->beginned_at }}</td>
-      <td>{{ $tache->finished_at }}</td>
-
-    </tr>
-  @empty
-      
-  @endforelse
-
+      <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="donnees" id="terminnees" value="terminees" checked>
+          <label class="form-check-label" >Les taches terminées</label>
+      </div>
+      <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="donnees" id="en_cours" value="en_cours">
+          <label class="form-check-label">Les taches encours</label>
+      </div>
+      <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="donnees" id="a_venir" value="a_venir">
+          <label class="form-check-label" >Les taches non démarrées</label>
+      </div>
   
+  </div>
+  <div class="form-group form-check-inline my-5">
+
+      <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="format" id="immediate" value="pdf" checked>
+          <label class="form-check-label" >Format pdf</label>
+      </div>
+      <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="format" id="important" value="excel" >
+          <label class="form-check-label" >Format excel</label>
+      </div>
+      <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="format" id="lower" value="csv" >
+          <label class="form-check-label" >Format csv</label>
+      </div>
   
-</table>
+  </div>
 
+  <div >
+      <button class="btn btn-primary">
 
-
-</body>
-</html>
-
-
+                  Exporter 
+      </button>
+  </div>
+</form>
+@endsection
