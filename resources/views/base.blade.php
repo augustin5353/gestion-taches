@@ -69,6 +69,13 @@
               text-white
               @endif"  href="" tabindex="-1" aria-disabled="false">Profile</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link @if(str_contains($route, 'statistiques.'))
+                text-dark
+                @else
+              text-white
+              @endif"  href="{{ route('taches.statistiques') }}" tabindex="-1" aria-disabled="false">Statistiques</a>
+            </li>
     
             {{-- @class(['nav-link text-white', 'action' => str_contains($route, 'option.')]) --}}
 

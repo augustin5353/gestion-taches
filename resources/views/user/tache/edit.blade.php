@@ -1,7 +1,7 @@
 
 @extends('base')
 
-@section('title', 'Créer une tache')
+@section('title', $tache->id == null ? 'Créer une tacte': 'Midifier la tacche numéro ' . $tache->id)
 
 @section('content')
 
@@ -59,6 +59,45 @@
         
         </div>
 
+        <div>
+            @if ($tache->id !== null)
+                @if ($tache->beginned_at !== null)
+                    @include('shared.input', [
+                    'name' => 'beginned_at',
+                    'holder' =>'date fin',
+                    'type' => 'datetime-local',
+                    'label' => 'Cette tache à demarré le:',
+                    'value' => $tache->beginned_at,
+                    ])
+                @else
+                    <h4>Tache non démarrée</h4>
+                    @include('shared.input', [
+                    'name' => 'beginned_at',
+                    'type' => 'hidden',
+                    'label' => ' ',
+                    ])
+                @endif
+
+                @if ($tache->finished_at !== null)
+                    @include('shared.input', [
+                    'name' => 'finished_at',
+                    'holder' =>'date fin',
+                    'type' => 'datetime-local',
+                    'label' => 'Cette tache est terminée le:',
+                    'value' => $tache->finished_at,
+                    ])
+                @else   
+                    @include('shared.input', [
+                    'name' => 'finished_at',
+                    'type' => 'hidden',
+                    'label' => ' ',
+                    ])
+                @endif
+            @endif
+        </div>
+
+
+
         
 
         <div class=" form-group">
@@ -81,21 +120,18 @@
         <div >
             <button class="btn btn-primary">
 
-                    Créer   
-
+                    @if ($tache->id == null )
+                        Créer
+                    @else
+                        Modifier
+                    @endif
             </button>
         </div>
     </form>
 
     <script>
         // Initialisation du datepicker Bootstrap
-        $(function () {
-          $('.datepicker').datepicker({
-            format: "yyyy-mm-dd",
-            autoclose: true,
-            todayHighlight: true
-          });
-        });
+        
     </script>
 @endsection
 

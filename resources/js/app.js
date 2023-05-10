@@ -13,3 +13,16 @@ $(function () {
         format: 'YYYY-MM-DD HH:mm:ss'
     });
 });
+
+$(function () {
+    $('.datepicker').datepicker({
+      format: "yyyy-mm-dd",
+      autoclose: true,
+      todayHighlight: true
+    });
+  });
+
+
+
+
+  

@@ -23,10 +23,20 @@ class ExportDataController extends Controller
         $user = User::find(Auth::id());
         $taches = $user->taches()->get();
     
+        //envoie de donnees à la vue qui sera télécharée(ce que le pdf va contenir)
         $pdf = Pdf::loadView('user.exportData.pdf.taches', [
             'taches' => $taches
         ]);
 
-        return $pdf->download('taches.pdf');
+    
+        //pour socker le pdf dans notre projet
+        //return Pdf::loadFile(public_path('\\storage\\app\\public'))->save('taches.pdf')->stream('taches.pdf');
+
+
+        //pour faire e télechargement une fois que user clique
+        //return $pdf->download('taches.pdf');
+
+        //pévisualiser le pdf, san télécharger
+        return $pdf->stream('taches.pdf');
     }
 }

@@ -37,9 +37,8 @@
             <th>Tache</th>
             <th>Devrait démarrer le  </th>
             <th>A terminer le </th>
-            <th>Urgent</th>
-            <th>Important</th>
-            <th>Pas urgent</th>
+            <th>Niveau</th>
+
             <th class="text-end">Actions</th>
 
         </tr>
@@ -52,19 +51,7 @@
                 <td>{{ $tache->name }}</td>
                 <td>{{ $tache->begin_at }}</td>
                 <td>{{ $tache->finish_at }}</td>
-                @include('shared.icon_valid', [
-                    'class' => 'bi bi-check-lg text-warning',
-                    'level' => 'immediate'
-                ])
-                @include('shared.icon_valid', [
-                    'class' => 'bi bi-check-lg text-danger',
-                    'level' => 'important'
-                ])
-                @include('shared.icon_valid', [
-                    'class' => 'bi bi-check-lg text-secondary',
-                    'level' => 'low'
-                ])
-
+                <td class="font-weight-bold @if($tache->level == 'low') text-secondary  @elseif($tache->level == 'high') text-danger @elseif($tache->level == 'medium') text-warning @endif">{{ Str::ucfirst($tache->level) }}</td>
                 <td>
                     <div class="d-flex gap-2 w-100 justify-content-end">
                         <a href="{{ route('taches.edit', ['tach' => $tache->id ]) }}" class="btn btn-primary">Editer</a>

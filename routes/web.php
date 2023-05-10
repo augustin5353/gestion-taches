@@ -33,12 +33,13 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('/taches', TacheController::class)->middleware('auth')->except(['show']);
 
-Route::get('/terminees', [TacheController::class, 'tachesTerminees'])->middleware('auth')->name('taches.terminees');
-Route::get('/en_cours', [TacheController::class, 'tachesEncours'])->middleware('auth')->name('taches.en_cours');
-Route::get('/a_venir', [TacheController::class, 'tachesAVenir'])->middleware('auth')->name('taches.a_venir');
+Route::get('/taches/terminees', [TacheController::class, 'tachesTerminees'])->middleware('auth')->name('taches.terminees');
+Route::get('/taches/en_cours', [TacheController::class, 'tachesEncours'])->middleware('auth')->name('taches.en_cours');
+Route::get('/taches/a_venir', [TacheController::class, 'tachesAVenir'])->middleware('auth')->name('taches.a_venir');
 
 Route::put('/taches/{id}/finish', [TacheController::class, 'marqueToFinish'])->middleware('auth')->name('taches.marque.finish');
 Route::put('/taches/{id}/begin', [TacheController::class, 'marqueToBegin'])->middleware('auth')->name('taches.marque.begin');
+Route::get('/taches/statistiques', [TacheController::class, 'statistiques'])->middleware('auth')->name('taches.statistiques');
 
 Route::get('/tasks-export', [ExportDataController::class, 'downloadView'])->name('export.view');
 Route::get('/tasks-export/tache_pdf', [ExportDataController::class, 'exportTachePdf'])->name('export.tache.pdf');

@@ -17,14 +17,16 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         
-        $taches = Tache::factory(100)->create();
+        
+        Tache::factory(100)->create();
 
-        \App\Models\User::factory(10)->create();
-
+        \App\Models\User::factory(5)->create();
         \App\Models\User::factory()->create([
-             'name' => 'Test User',
-             'email' => 'reuss@gmail.com',
-            'password' => Hash::make('00000000')
-         ]);
+            'name' => 'Test User',
+            'email' => 'reuss@gmail.com',
+           'password' => Hash::make('00000000')
+        ]);
+
+        
     }
 }
