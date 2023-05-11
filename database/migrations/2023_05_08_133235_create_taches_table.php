@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->enum('level', ['immediate', 'important', 'low'])->default('important');
+            $table->enum('level', ['low', 'medium', 'high'])->default('medium');
             $table->dateTime('begin_at')->nullable();
             $table->dateTime('beginned_at')->nullable();
             $table->dateTime('finish_at')->nullable();

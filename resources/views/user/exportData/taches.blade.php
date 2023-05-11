@@ -7,12 +7,14 @@
 @section('content')
 <h1>@yield('title')</h1>
 
-<div class="d-flex justify-content-between">
+{{-- <div class="d-flex justify-content-between">
     <div><a href="{{ route('export.tache.pdf')}}">Télécharger le pdf</a></div>
     <div><a href="{{ route('export.tache.excel')}}">Télécharger le excel</a></div>
 </div>
+ --}}
 
-<form class="vstack gap-3" action="{{ route('export.tache') }}" method="post" enctype="multipart/form-data">
+ <div class=" text-center"><h3 class=" text-info mt-4">Exporter les données</h3></div>
+<form class="vstack gap-3" action="{{ route('taches.export.tache') }}" method="post" enctype="multipart/form-data">
 
   @csrf
   @method('post')

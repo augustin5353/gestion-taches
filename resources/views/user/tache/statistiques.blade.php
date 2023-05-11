@@ -1,11 +1,6 @@
-@extends('base')
 
-@section('title')
-    Statistiques
-@endsection
 
-@section('content')
-    <div class=""><h1 class="text-primary">Statisques</h1></div>
+
 
     <table class="table">
         <thead>
@@ -33,4 +28,6 @@
 
         </tbody>
       </table>
-@endsection
+
+      
+    

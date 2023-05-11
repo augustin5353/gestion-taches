@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [TacheController::class, 'home'])->middleware('auth')->name('taches.home');
+
+Route::get('/dashboard', [TacheController::class, 'dashoard'])->middleware('auth')->name('dashboard'); 
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -29,18 +29,32 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('/taches', TacheController::class)->middleware('auth')->except(['show']);
 
-Route::get('/taches/terminees', [TacheController::class, 'tachesTerminees'])->middleware('auth')->name('taches.terminees');
-Route::get('/taches/en_cours', [TacheController::class, 'tachesEncours'])->middleware('auth')->name('taches.en_cours');
-Route::get('/taches/a_venir', [TacheController::class, 'tachesAVenir'])->middleware('auth')->name('taches.a_venir');
+Route::prefix('/taches')->name('taches.')->middleware('auth')->group(function(){
 
-Route::put('/taches/{id}/finish', [TacheController::class, 'marqueToFinish'])->middleware('auth')->name('taches.marque.finish');
-Route::put('/taches/{id}/begin', [TacheController::class, 'marqueToBegin'])->middleware('auth')->name('taches.marque.begin');
-Route::get('/taches/statistiques', [TacheController::class, 'statistiques'])->middleware('auth')->name('taches.statistiques');
+    Route::get('terminees', [TacheController::class, 'tachesTerminees'])->name('terminees');
+    Route::get('en_cours', [TacheController::class, 'tachesEncours'])->name('en_cours');
+    Route::get('a_venir', [TacheController::class, 'tachesAVenir'])->name('a_venir');
 
-Route::get('/tasks-export', [ExportDataController::class, 'downloadView'])->name('export.view');
+    Route::get('notifiable/{tache}', [TacheController::class, 'setNotifiableColumn'])->name('notifiable');
+
+    Route::put('{id}/finish', [TacheController::class, 'marqueToFinish'])->name('marque.finish');
+    Route::put('{id}/begin', [TacheController::class, 'marqueToBegin'])->name('marque.begin');
+    Route::get('statistiques', [TacheController::class, 'statistiques'])->name('statistiques');    
+
+    Route::post('/tasks-export', [ExportDataController::class, 'exportData'])->name('export.tache');
+    Route::get('/tasks-export', [ExportDataController::class, 'downloadView'])->name('export.view');
+
+   
+});
+
+
+
+//export route avant la methode exportData
+/* 
 Route::get('/tasks-export/tache_pdf', [ExportDataController::class, 'exportTachePdf'])->name('export.tache.pdf');
-Route::get('/tasks-export/tache_excel', [ExportDataController::class, 'exportTacheExcel'])->name('export.tache.excel');
-Route::post('/tasks-export', [ExportDataController::class, 'exportData'])->name('export.tache');
+Route::get('/tasks-export/tache_excel', [ExportDataController::class, 'exportTacheExcel'])->name('export.tache.excel'); */
+
+
 //Route::get('/terminees', [TacheController::class, 'tachesTerminees'])->middleware('auth')->name('taches.terminees');
 
 

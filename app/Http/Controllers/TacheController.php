@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Tache;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateTacheRequest;
@@ -14,26 +15,36 @@ class TacheController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     public function home(){
+
+       $user = User::find(Auth::id());
+
+        
+
+        $taches = $user->taches()->orderBy('finish_at', 'asc')->limit(6)->get();
+
+        return view('user.tache.home', [
+
+            
+            'taches' => $taches,
+
+        ]);
+     }
+
     public function index()
     {
         /* $date = Carbon::create(now());
         $date->addDays(30); */
 
-
         $taches = Tache::all();
-
-        foreach($taches as $tahe){
-            $tahe->user_id = 7;
-
-            $tahe->save();
-        }
-       
+        
        $user = User::find(Auth::id());
 
        
 
 
-        $taches = $user->taches()->orderBy('begin_at', 'asc')->orderBy('created_at', 'asc')->paginate(15);
+        $taches = $user->taches()->orderBy('finish_at', 'asc')->orderBy('created_at', 'asc')->paginate(15);
 
         
 
@@ -51,7 +62,7 @@ class TacheController extends Controller
 
 
 
-        $taches = $user->taches()->whereNotNull('beginned_at')->whereNull('finished_at')->paginate(15);
+        $taches = $user->taches()->whereNotNull('beginned_at')->whereNull('finished_at')->orderBy('finish_at', 'asc')->paginate(15);
 
         return view('user.tache.en_cours', [
             'taches' => $taches
@@ -66,7 +77,7 @@ class TacheController extends Controller
 
 
 
-        $taches = $user->taches()->whereNull('beginned_at')->paginate(15);
+        $taches = $user->taches()->whereNull('beginned_at')->orderBy('begin_at', 'asc')->paginate(15);
 
         return view('user.tache.a_venir', [
             'taches' => $taches
@@ -82,7 +93,7 @@ class TacheController extends Controller
 
 
 
-        $tachesTerminees = $user->taches()->whereNotNull('finished_at')->paginate(15);
+        $tachesTerminees = $user->taches()->whereNotNull('finished_at')->orderBy('finished_at', 'asc')->paginate(15);
 
         return view('user.tache.terminees', [
 
@@ -136,6 +147,16 @@ class TacheController extends Controller
         ]);
     }
 
+    public function setNotifiableColumn($tache){
+
+        $tache = Tache::find($tache);
+        $tache->notifiable = false;
+        $tache->save();
+
+        return to_route('taches.edit', $tache)->with('success', 'Vous n\'allez plus recevoir de notifications pour cette tache');
+
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -162,6 +183,7 @@ class TacheController extends Controller
             'finish_at' => $request->validated('finish_at'),
             'beginned_at' => $request->input('beginned_at'),
             'finishes_at' => $request->input('finishes_at'),
+            'notifiable' => $request->input('notifiable'),
             'user_id' => $id
         ];
 
@@ -217,5 +239,29 @@ class TacheController extends Controller
         $tache->delete();
 
         return to_route('taches.index')->with('Suppression effectuée avec succès');
+    }
+
+    public function dashoard(){
+        $user = User::find(Auth::id());
+
+        $nbrTotalTaches = $user->taches()->count();
+
+        $nbrTachesTerminees = $user->taches()->whereNotNull('finished_at')->count();
+        $nbrTachesTermineesEnRetard = $user->taches()->whereNotNull('finished_at')->whereDate('finished_at', ">", DB::raw('finish_at'))->count();
+
+        $nrbTachesNondemarrees =  $user->taches()->whereNull('beginned_at')->count();
+
+        $nbrTachesEnCours = $user->taches()->whereNotNull('beginned_at')->whereNull('finished_at')->count();
+        $nbrTachesDemarreesEnRetard = $user->taches()->whereNotNull('beginned_at')->whereNull('finished_at')->whereDate('beginned_at', ">", DB::raw('begin_at'))->count();
+
+    
+        return view('dashboard', [
+            'nbrTotalTaches' => $nbrTotalTaches,
+            'nbrTachesTerminees' => $nbrTachesTerminees,
+            'nbrTachesTermineesEnRetard' => $nbrTachesTermineesEnRetard,
+            'nrbTachesNondemarrees' => $nrbTachesNondemarrees,
+            'nbrTachesEnCours' => $nbrTachesEnCours,
+            'nbrTachesDemarreesEnRetard' => $nbrTachesDemarreesEnRetard,
+        ]);
     }
 }

@@ -2,26 +2,6 @@
     $route = request()->route()->getName();
 ?>
 
-<div class="d-flex justify-content-between align-items-center">
-    <a href="{{ route('taches.index') }}" class="@if ($route == 'taches.index')
-        text-dark
-    @endif">Toutes mes taches</a>
-
-    <a href="{{ route('taches.en_cours') }}" class="@if ($route == 'taches.en_cours')
-    text-dark
-    @endif">Taches  en cours</a>
-
-    <a href="{{ route('taches.terminees') }}" class="@if ($route == 'taches.terminees')
-    text-dark
-    @endif">Taches terminées</a>
-
-    <a href="{{ route('taches.a_venir') }}" class="@if ($route == 'taches.a_venir')
-    text-dark
-    @endif">Taches à venir</a>
-
-    
-</div>
-
 <table class="table table.striped">
     <thead>
         <tr>

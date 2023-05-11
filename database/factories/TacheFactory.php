@@ -19,17 +19,17 @@ class TacheFactory extends Factory
    
     {
 
-        $begin_at = $this->faker->dateTimeBetween('-1 day', '+2 week');
-        $finish_at = $this->faker->dateTimeBetween($begin_at, '+6 weeks');
+        $begin_at = $this->faker->dateTimeBetween('-3 day', '+1 week');
+        $finish_at = $this->faker->dateTimeBetween($begin_at, '+4 weeks');
 
-        $beginned_at = Carbon::instance($begin_at)->isBefore(now()) ? $this->faker->dateTimeBetween('-1 day', $begin_at) : null;
-        $finished_at = Carbon::instance($finish_at)->isBefore(now()) ? $this->faker->dateTimeBetween($finish_at, '+2 week') : null;
+        $beginned_at = Carbon::instance($begin_at)->isBefore(now()) ? $this->faker->dateTimeBetween('-3 day', $begin_at) : null;
+        $finished_at = Carbon::instance($finish_at)->isBefore(now()) ? $this->faker->dateTimeBetween($finish_at, '+4 week') : null;
 
         return [
             'name' => $this->faker->sentence(3),
             'description' => $this->faker->text(),
             'level' => $this->faker->randomElement(['low', 'medium', 'high']),
-            'user_id' => 1,
+            'user_id' => 7,
             'begin_at' => $begin_at,
             'finish_at' => $finish_at,
             'beginned_at' => $beginned_at,

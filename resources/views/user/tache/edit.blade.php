@@ -5,7 +5,9 @@
 
 @section('content')
 
-    <h1 class="mb-20 mt-lg-n1">@yield('title')</h1>
+    <div class="text-center mt-4">
+        <h3 class="mb-20 mt-lg-n1 text-info">@yield('title')</h3>
+    </div>
 
     <form class="vstack gap-3" action="{{ route('taches.store') }}" method="post" enctype="multipart/form-data">
 
@@ -43,7 +45,18 @@
 
         
         <div class="form-group form-check-inline">
-
+            <label for="" class="mr-5">Recevoir de notification pour cette tache</label>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="notifiable" id="immediate" value={{1}} checked>
+                <label class="form-check-label" for="oui">Oui</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="notifiable" id="non" value={{0 }}>
+                <label class="form-check-label" for="non">Non</label>
+            </div>
+        </div>
+        <div class="form-group form-check-inline">
+            <label for="" class="mr-5">Niveau</label>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="level" id="immediate" value="immediate" @checked($tache->level == 'immediate')>
                 <label class="form-check-label" for="immediate">Urgent</label>
@@ -56,7 +69,6 @@
                 <input class="form-check-input" type="radio" name="level" id="lower" value="low" @checked($tache->level == 'low')>
                 <label class="form-check-label" for="lower">Pas urgent</label>
             </div>
-        
         </div>
 
         <div>
@@ -97,28 +109,7 @@
         </div>
 
 
-
-        
-
-        <div class=" form-group">
-
-        </div>
-
-
-
-
-    {{-- <div class=" form-group">
-        <label for="begin_at">Date debut:</label>
-        <input type="text" class="form-control datepicker" id="begin_at" name="begin_at">
-    </div>
-
-    <div class=" form-group">
-        <label for="finish_at">Date fin:</label>
-        <input type="text" class="form-control datepicker" id="finish_at" name="finish_at">
-    </div>
- --}}
-        <div >
-            <button class="btn btn-primary">
+            <button class="btn btn-primary mb-5">
 
                     @if ($tache->id == null )
                         Créer
@@ -126,7 +117,6 @@
                         Modifier
                     @endif
             </button>
-        </div>
     </form>
 
     <script>

@@ -13,8 +13,15 @@ use Maatwebsite\Excel\Concerns\Exportable;
 //FromCollection, 
 class TachesExport implements FromView
 {
+
+
     //pour format csv
     use Exportable;
+
+    protected $data = null;
+    public function __construct($data){
+        $this->data = $data;
+    }
     /**
     * @return \Illuminate\Support\Collection
     */
@@ -28,12 +35,11 @@ class TachesExport implements FromView
     } */
     public function view(): View
     {
-        $user = User::find(Auth::id());
-        $taches = $user->taches()->whereNotNull('finished_at')->get();
+
 
         return view(
             'exports.taches', [
-                'taches' => $taches
+                'taches' => $this->data
             ]
             );
     }

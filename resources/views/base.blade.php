@@ -43,74 +43,78 @@
     <?php
       $route = request()->route()->getName();
       ?>
-    <div class="p-3 mb-2 bg-primary ">
-          <ul class="nav  ">
+    <nav class="navbar navbar-expand-lg  bg-info">
+          <ul class="nav  justify-content-center">
         
             <li class="nav-item" >
-              <a class="nav-link @if($route == 'taches.index')
-              text-dark
-              @else
-              text-white
-            @endif"  href="{{ route('taches.index', [
-              'typeTache' => 'en_cours'
-            ]) }}" >Mes taches</a>
+              <a class="nav-link @if($route == 'taches.home') text-green-600   @else   text-white  @endif"  href="{{ route('taches.home', ['typeTache' => 'en_cours'
+            ]) }}" >Accueil</a>
             </li>
             <li class="nav-item">
               <a class="nav-link @if(str_contains($route, 'create'))
-                text-dark
+              text-green-600
                 @else
               text-white
               @endif"  href="{{ route('taches.create') }}">Nouvelle tache</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link @if(str_contains($route, 'profile.'))
-                text-dark
+              <a class="nav-link @if(str_contains($route, 'statistiques.'))
+              text-green-600
                 @else
               text-white
-              @endif"  href="" tabindex="-1" aria-disabled="false">Profile</a>
+              @endif"  href="{{ route('dashboard') }}" tabindex="-1" aria-disabled="false">Dashboard</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link @if(str_contains($route, 'statistiques.'))
-                text-dark
-                @else
-              text-white
-              @endif"  href="{{ route('taches.statistiques') }}" tabindex="-1" aria-disabled="false">Statistiques</a>
+              
             </li>
+            
     
             {{-- @class(['nav-link text-white', 'action' => str_contains($route, 'option.')]) --}}
+            
 
             <li class="nav-item ">
                 @auth
-            
               
-                  <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-          
-                    <button type="submit" class="nav-link text-white ">
-                        {{ __('Log Out') }}
-                    </button>
-                  </form>
+                <a class="nav-link text-white"  href="{{ route('profile.edit')}}" tabindex="-1" aria-disabled="false">Profile</a>
+
                 @endauth
                 
                 @guest
-                    <a class="nav-link text-white" href="">Se connecter</a>
+                    <a class="nav-link text-white" href="{{ route('login') }}">Se connecter</a>
                 @endguest
             </li>
 
           </ul>
 
-      </div>
+    </nav>
       
     </div>
 
+        <div class="container nt-3">
 
+          @include('shared.flash')
 
+          {{-- <div class="d-flex justify-content-between align-items-center my-5">
+            <a href="{{ route('taches.index') }}" class="@if ($route == 'taches.index')
+                text-dark
+            @endif">Toutes mes taches</a>
+        
+            <a href="{{ route('taches.en_cours') }}" class="@if ($route == 'taches.en_cours')
+            text-dark
+            @endif">Taches  en cours</a>
+        
+            <a href="{{ route('taches.terminees') }}" class="@if ($route == 'taches.terminees')
+            text-dark
+            @endif">Taches terminées</a>
+        
+            <a href="{{ route('taches.a_venir') }}" class="@if ($route == 'taches.a_venir')
+            text-dark
+            @endif">Taches à venir</a>
 
-
-    <div class="container nt-3">
-
-      
-        @include('shared.flash')
+            <a href="{{ route('export.view') }}" class="">Exporter les données</a>
+        
+            
+          </div> --}}
 
         @yield('content')
 

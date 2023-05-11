@@ -12,25 +12,8 @@ $route = request()->route()->getName();
     $route = request()->route()->getName();
 ?>
 
-<div class="d-flex justify-content-between align-items-center my-5">
-    <a href="{{ route('taches.index') }}" class="@if ($route == 'taches.index')
-        text-dark
-    @endif">Toutes mes taches</a>
-
-    <a href="{{ route('taches.en_cours') }}" class="@if ($route == 'taches.en_cours')
-    text-dark
-    @endif">Taches  en cours</a>
-
-    <a href="{{ route('taches.terminees') }}" class="@if ($route == 'taches.terminees')
-    text-dark
-    @endif">Taches terminées</a>
-
-    <a href="{{ route('taches.a_venir') }}" class="@if ($route == 'taches.a_venir')
-    text-dark
-    @endif">Taches à venir</a>
-    <a href="{{ route('export.view') }}" class="">Exporter les données</a>
-
-    
+<div class=" text-center my-5">
+    <h3 class="text-info">Toutes vos taches</h3>
 </div>
 
 <table class="table table.striped">
@@ -50,8 +33,8 @@ $route = request()->route()->getName();
             <tr>
                 
                 <td>{{ $tache->name }}</td>
-                <td>{{ $tache->begin_at }}</td>
-                <td>{{ $tache->finish_at }}</td>
+                <td>{{ $tache->getDate($tache->begin_at)}}</td>
+                <td>{{ $tache->getDate($tache->finish_at) }}</td>
                 <td class="font-weight-bold @if($tache->level == 'low') text-secondary  @elseif($tache->level == 'high') text-danger @elseif($tache->level == 'medium') text-warning @endif">{{ Str::ucfirst($tache->level) }}</td>
                 <td>
                     <div class="d-flex gap-2 w-100 justify-content-end">

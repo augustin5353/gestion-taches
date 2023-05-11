@@ -19,8 +19,51 @@ class ExportDataController extends Controller
         return view('user.exportData.taches', [
             'taches' => $taches
         ]);
+    }   
+
+    public function exportData(Request $request){
+
+        $user = User::find(Auth::id());
+
+        $taches = $user->taches()->whereNotNull('finished_at')->get();
+
+        $tachesEnCours = $user->taches()->whereNull('finished_at')->whereNotNull('beginned_at')->get();
+
+        $option = true;
+
+            switch ($option) {
+
+            case ($request->input('donnees')=='terminees' && $request->input('format')=='pdf'):
+
+                $pdf = Pdf::loadView('user.exportData.pdf.taches', [
+                    'taches' => $taches
+                ]);
+
+                return $pdf->download('taches.pdf');
+
+            case ($request->input('donnees')=='terminees' && $request->input('format')=='csv'):
+
+                return Excel::download(new TachesExport($taches), 'taches.csv', \Maatwebsite\Excel\Excel::CSV);
+
+            case ($request->input('donnees')=='terminees' && $request->input('format')=='excel'):
+
+                return Excel::download(new TachesExport($taches), 'taches.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+
+            case (false):
+                echo "Option 3 sélectionnée";
+                break;
+            default:
+                dd("invalide");
+            }
+
+        
+
     }
-    public function exportTacheExcel()
+}
+
+
+
+/* public function exportTacheExcel()
     {
 
 
@@ -57,37 +100,4 @@ class ExportDataController extends Controller
 
         //pévisualiser le pdf, san télécharger
         
-    }
-
-    public function exportData(Request $request){
-
-        $user = User::find(Auth::id());
-
-        $taches = $user->taches()->whereNotNull('finished_at')->get();
-
-        $tachesEnCours = $user->taches()->whereNull('finished_at')->whereNotNull('beginned_at')->get();
-
-        $option = $request->input('donnees')=='terminees' && $request->input('format')=='pdf';
-
-            switch ($option) {
-            case ($request->input('donnees')=='terminees' && $request->input('format')=='pdf'):
-                $pdf = Pdf::loadView('user.exportData.pdf.taches', [
-                    'taches' => $taches
-                ]);
-
-                return $pdf->download('taches.pdf');
-            case 2:
-                echo "Option 2 sélectionnée";
-                break;
-            case 3:
-                echo "Option 3 sélectionnée";
-                break;
-            default:
-                echo "Option non valide";
-                break;
-            }
-
-        
-
-    }
-}
+    } */
