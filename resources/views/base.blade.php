@@ -58,7 +58,7 @@
               @endif"  href="{{ route('taches.create') }}">Nouvelle tache</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link @if(str_contains($route, 'statistiques.'))
+              <a class="nav-link @if(str_contains($route, 'dashboard'))
               text-green-600
                 @else
               text-white

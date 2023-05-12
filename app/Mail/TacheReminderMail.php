@@ -2,14 +2,15 @@
 
 namespace App\Mail;
 
-use App\Models\Tache;
+use App\Models\Task;
 use App\Models\User;
+use App\Models\Tache;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class TacheReminderMail extends Mailable
 {
@@ -20,7 +21,7 @@ class TacheReminderMail extends Mailable
      */
    
      private User $user;
-    public function __construct(public Tache $tache, User $user)
+    public function __construct(public Task $tache, User $user)
     {
         $this->user = $user;
     }

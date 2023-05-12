@@ -27,8 +27,8 @@ class CreateTacheRequest extends FormRequest
             'name' => ['required','string', 'min:5'],
             'description' => ['required','string', 'min:5'],
             'level' => ['required'],
-            'begin_at' => ['date'],
-            'finish_at' => ['date',],
+            'begin_at' => ['required', 'date', 'before:finish_at'],
+            'finish_at' => ['required','date',],
         ];
     }
 }

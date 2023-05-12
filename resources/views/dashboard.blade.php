@@ -10,7 +10,7 @@
       $route = request()->route()->getName();
       ?>
 <div class="container-fluid my-3">
-    <div class="row">
+    <div class="row justify-content-center align-items-center">
       <div class="col-md-3">
         <!-- Sidebar -->
         <div class="mb-3"><h3 class=" text-info ">Menu</h3></div>
@@ -20,29 +20,29 @@
             <li class="nav-item mb-3">
                 <a href="{{ route('taches.index') }}" class="@if ($route == 'taches.index')
                 text-dark
-            @endif">Toutes mes taches</a>
+            @endif fs-5">Toutes mes taches</a>
             </li>
             
             <li class="nav-item mb-3">
               <a href="{{ route('taches.terminees') }}" class="@if ($route == 'taches.terminees')
             text-dark
-            @endif">Taches  Terminées</a>
+            @endif fs-5" >Taches  Terminées</a>
         
             </li>
             <li class="nav-item mb-3">
               <a href="{{ route('taches.en_cours') }}" class="@if ($route == 'taches.en_cours')
             text-dark
-            @endif">Taches  en cours</a>
+            @endif fs-5">Taches  en cours</a>
         
             </li>
             
             <li class="nav-item mb-3">
                 <a href="{{ route('taches.a_venir') }}" class="@if ($route == 'taches.a_venir')
             text-dark
-            @endif">Taches non démarrées</a>
+            @endif fs-5">Taches non démarrées</a>
             </li>
             <li class="nav-itemmb-3">
-                <a href="{{ route('taches.export.view') }}" class="">Exporter les données</a>
+                <a href="{{ route('taches.export.view') }}" class="fs-5">Exporter les données</a>
             </li>
           </ul>
         </div>
@@ -55,6 +55,25 @@
             @include('user.tache.statistiques')
           </div>
         </div>
+      </div>
+    </div>
+    <div class=" mt-5">
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        @forelse ($tachesTerminesEcheanceProche as $tache)
+            <div class="col">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-titlev text-center">Echéance: {{ $tache->getDate($tache->finish_at)}} </h5>
+                  <p class="card-text ">{{ $tache->description }}</p>
+                  <p class="card-text text-center"><small class="text-muted">Démarrage: {{ $tache->getDate($tache->begin_at)}} </small></p>
+                  <div class="card-footer text-center"><a href="{{ route('taches.edit', ['tach' => $tache->id])}}" class="stretched-link text-danger">{{ Str::ucfirst($tache->level) }}</a></div>
+                </div>
+              </div>
+            </div>
+        @empty
+            
+        @endforelse
+        
       </div>
     </div>
   </div>

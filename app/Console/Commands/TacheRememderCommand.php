@@ -35,11 +35,14 @@ class TacheRememderCommand extends Command
 
         foreach($users as $user)
         {
-            $taches = $user->taches()->whereDate('finish_at', '<=', Carbon::now()->addDays(7))->whereNull('finished_at')->get();
+            $taches = $user->taches()->whereDate('finish_at', '<=', Carbon::now()->addDays(3))->whereNull('finished_at')->get();
 
             foreach($taches as $tache)
             {
-                $user->notify(new TacheRememderNotification($tache, $user));
+                if($tache->notifiable == true){
+                    $user->notify(new TacheRememderNotification($tache, $user));
+                }
+                
             }
         }
     }

@@ -4,9 +4,10 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Task;
 use App\Models\Tache;
-use Database\Factories\TacheFactory;
 use Illuminate\Database\Seeder;
+use Database\Factories\TacheFactory;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -18,7 +19,7 @@ class DatabaseSeeder extends Seeder
     {
         
         
-        Tache::factory(100)->create();
+        Task::factory(100)->create();
 
         \App\Models\User::factory(5)->create();
         \App\Models\User::factory()->create([

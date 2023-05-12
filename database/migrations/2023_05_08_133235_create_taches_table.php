@@ -11,16 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('taches', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->enum('level', ['low', 'medium', 'high'])->default('medium');
+            $table->string('level')->default('medium');
             $table->dateTime('begin_at')->nullable();
             $table->dateTime('beginned_at')->nullable();
             $table->dateTime('finish_at')->nullable();
             $table->dateTime('finished_at')->nullable();
+            $table->boolean('notifiable')->default(true);
             $table->timestamps();
+
+            $table->foreignIdFor(App\Models\User::class)->nullable();
         });
     }
 
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('taches');
+        Schema::dropIfExists('tasks');
     }
 };

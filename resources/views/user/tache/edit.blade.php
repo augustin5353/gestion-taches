@@ -58,11 +58,11 @@
         <div class="form-group form-check-inline">
             <label for="" class="mr-5">Niveau</label>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="level" id="immediate" value="immediate" @checked($tache->level == 'immediate')>
+                <input class="form-check-input" type="radio" name="level" id="immediate" value="immediate" @checked($tache->level == 'high')>
                 <label class="form-check-label" for="immediate">Urgent</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="level" id="important" value="important" @checked($tache->level == 'important') @checked($tache->id == null)>
+                <input class="form-check-input" type="radio" name="level" id="important" value="important" @checked($tache->level == 'medium') @checked($tache->id == null)>
                 <label class="form-check-label" for="important">Important</label>
             </div>
             <div class="form-check form-check-inline">

@@ -2,14 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-/**
- * @mixin IdeHelperTache
- */
-class Tache extends Model
+class Task extends Model
 {
     use HasFactory;
 
@@ -38,5 +35,3 @@ class Tache extends Model
         return $date->translatedFormat('d F Y H:i');
     }
 }
-
-/* documentation carbon  https://www.gekkode.com/developpement/comment-gerer-datetime-avec-carbon-dans-laravel-php/ */

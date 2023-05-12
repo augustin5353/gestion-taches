@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('taches', function (Blueprint $table) {
-            $table->enum('level', ['low', 'medium', 'high'])->default('medium')->change();
+        Schema::create('groups', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('taches', function (Blueprint $table) {
-            $table->dropColumn('level');
-        });
+        Schema::dropIfExists('groups');
     }
 };

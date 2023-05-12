@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Tache;
-use Illuminate\Console\Command;
+use App\Models\Task;
 use Illuminate\Support\Carbon;
+use Illuminate\Console\Command;
 
 class RefresDbCommand extends Command
 {
@@ -27,7 +27,7 @@ class RefresDbCommand extends Command
      */
     public function handle()
     {
-        $taches = Tache::all();
+        $taches = Task::all();
         foreach($taches as $tache){
 
             $begin = Carbon::parse($tache->begin_at);
