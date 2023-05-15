@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ExportDataController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,9 @@ Route::middleware('auth')->group(function () {
 
 
 Route::resource('/taches', TaskController::class)->middleware('auth')->except(['show']);
+
+Route::resource('/group', GroupController::class)->middleware('auth')->except(['show']);
+Route::post('/group/{group}/{user}', [GroupController::class, 'addUser'])->middleware('auth')->name('group.add.user');
 
 Route::prefix('/taches')->name('taches.')->middleware('auth')->group(function(){
 

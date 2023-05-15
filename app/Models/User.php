@@ -49,4 +49,9 @@ class User extends Authenticatable
     public function taches(){
         return $this->hasMany(Task::class);
     }
+    
+
+    public function groups(){
+        return $this->belongsToMany(Group::class);
+    }
 }

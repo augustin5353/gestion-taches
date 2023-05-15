@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\User;
+use App\Models\Group;
+use App\Models\Task;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,12 +13,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('groups', function (Blueprint $table) {
-            $table->id();
-          
-            $table->timestamps();
-
-            
+        Schema::create('group_task', function (Blueprint $table) {
+            $table->foreignIdFor(Group::class);
+            $table->foreignIdFor(Task::class);
         });
     }
 
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('group_task');
     }
 };

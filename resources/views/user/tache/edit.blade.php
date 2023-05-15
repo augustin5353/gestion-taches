@@ -5,6 +5,7 @@
 
 @section('content')
 
+  <div class="container-xxl">
     <div class="text-center mt-4">
         <h3 class="mb-20 mt-lg-n1 text-info">@yield('title')</h3>
     </div>
@@ -123,6 +124,7 @@
         // Initialisation du datepicker Bootstrap
         
     </script>
+  </div>
 @endsection
 
 

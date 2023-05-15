@@ -5,3 +5,11 @@
 /* table pdf  */
 
 
+body {
+    background-color: rgb(238, 243, 240) !important;
+}
+
+
+a {
+    text-decoration: none !important;
+  }

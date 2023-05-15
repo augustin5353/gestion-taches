@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\JoinGroupEvent;
+use App\Http\Requests\GroupRequest;
 use App\Models\Group;
-use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
@@ -12,7 +15,12 @@ class GroupController extends Controller
      */
     public function index()
     {
-        //
+        $groups = Group::paginate(15);
+
+        return view('group.index', [
+            'groups' => $groups
+        ]);
+        
     }
 
     /**
@@ -20,15 +28,28 @@ class GroupController extends Controller
      */
     public function create()
     {
-        //
+        return view('group.edit', ['group' => new Group()]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(GroupRequest $request)
     {
-        //
+        $user = User::find(Auth::id());
+
+        $group = Group::create($request->validated());
+
+        //associer le group nouvellement créé à l'utilisateur connecté, donc le group va contenir user_id = user->is
+        $group->user()->associate($user->id);
+
+        $group->save();
+
+        //mettre l'utilisateur qui à créé le groupe comme membre du groupe à travers la table group_user
+        $user->groups()->attach($group->id);
+
+        return to_route('group.index', ['group'=>$group])->with('success', 'Groupe '. $group->id.' modifié avec succès');
+
     }
 
     /**
@@ -44,15 +65,17 @@ class GroupController extends Controller
      */
     public function edit(Group $group)
     {
-        //
+        return view('group.edit', ['group' => $group]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Group $group)
+    public function update(GroupRequest $request, Group $group)
     {
-        //
+        $group->update($request->validated());
+
+        return to_route('group.index')->with('success', 'Groupe '. $group->id.' modifié avec succès');
     }
 
     /**
@@ -61,5 +84,17 @@ class GroupController extends Controller
     public function destroy(Group $group)
     {
         //
+    }
+
+    public function addUser($group, $user){
+
+        $group = Group::find($group);
+
+        $user = User::find($user);
+
+        event(new JoinGroupEvent($group, $user));
+
+        dd('ok');
+
     }
 }

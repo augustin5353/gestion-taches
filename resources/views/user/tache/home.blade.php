@@ -6,6 +6,8 @@
 
 @section('content')
 
+<div class=" container-xxl">
+    
 <div class=" text-center my-5">
     <h3 class="text-info"> Ces taches terminent bientot</h3>
 </div>
@@ -56,6 +58,7 @@
     
         </tbody>
     </table>
+</div>
 </div>
 
    

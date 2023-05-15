@@ -21,7 +21,7 @@ class TaskController extends Controller
  
          
  
-         $taches = $user->taches()->orderBy('finish_at', 'asc')->whereDate('finish_at', '>=', now())->limit(6)->get();
+         $taches = $user->taches()->recentTask()->whereDate('finish_at', '>=', now())->limit(6)->get();
  
          return view('user.tache.home', [
  
@@ -38,15 +38,15 @@ class TaskController extends Controller
  
          $user = User::find(Auth::id());
  
-         $tachesTerminesEcheanceProche = $user->taches()->whereDate('finish_at', '<=', Carbon::now()->addDays('6'))->orderBy('finish_at', 'asc')->limit(6)->get();
+         $tasks = $user->taches()->whereDate('finish_at', '<=', Carbon::now()->addDays('3'))->whereDate('finish_at', '>=', now())->recentTask()->nullDate('finished_at', true)->limit(6)->get();
  
-         $nbrTachesTerminees = $user->taches()->whereNotNull('finished_at')->count();
-         $nbrTachesTermineesEnRetard = $user->taches()->whereNotNull('finished_at')->whereDate('finished_at', ">", DB::raw('finish_at'))->count();
+         $nbrTachesTerminees = $user->taches()->nullDate('finished_at', false)->count();
+         $nbrTachesTermineesEnRetard = $user->taches()->nullDate('finished_at', false)->compareDate('finished_at', DB::raw('finish_at'))->count();
  
          $nrbTachesNondemarrees =  $user->taches()->whereNull('beginned_at')->count();
  
-         $nbrTachesEnCours = $user->taches()->whereNotNull('beginned_at')->whereNull('finished_at')->count();
-         $nbrTachesDemarreesEnRetard = $user->taches()->whereNotNull('beginned_at')->whereNull('finished_at')->whereDate('beginned_at', ">", DB::raw('begin_at'))->count();
+         $nbrTachesEnCours = $user->taches()->whereNotNull('beginned_at')->nullDate()->count();
+         $nbrTachesDemarreesEnRetard = $user->taches()->whereNotNull('beginned_at')->compareDate('beginned_at', DB::raw('begin_at'))->count();
  
      
          return view('dashboard', [
@@ -56,7 +56,7 @@ class TaskController extends Controller
              'nrbTachesNondemarrees' => $nrbTachesNondemarrees,
              'nbrTachesEnCours' => $nbrTachesEnCours,
              'nbrTachesDemarreesEnRetard' => $nbrTachesDemarreesEnRetard,
-             'tachesTerminesEcheanceProche' => $tachesTerminesEcheanceProche
+             'tasks' => $tasks
          ]);
      }
  
@@ -73,12 +73,12 @@ class TaskController extends Controller
         
  
  
-         $taches = $user->taches()->orderBy('finish_at', 'asc')->orderBy('created_at', 'asc')->paginate(15);
+         $tasks = $user->taches()->recentTask()->recentTask('created_at')->paginate(15);
  
          
  
          return view('user.tache.index', [
-             'taches' => $taches,
+             'tasks' => $tasks,
  
          ]);
      }
@@ -91,10 +91,10 @@ class TaskController extends Controller
  
  
  
-         $taches = $user->taches()->whereNotNull('beginned_at')->whereNull('finished_at')->orderBy('finish_at', 'asc')->paginate(15);
+         $tasks = $user->taches()->whereNotNull('beginned_at')->whereNull('finished_at')->recentTask()->paginate(15);
  
          return view('user.tache.en_cours', [
-             'taches' => $taches
+             'tasks' => $tasks
          ]);
      }
      public function tachesAVenir()
@@ -106,10 +106,10 @@ class TaskController extends Controller
  
  
  
-         $taches = $user->taches()->whereNull('beginned_at')->orderBy('begin_at', 'asc')->paginate(15);
+         $tasks = $user->taches()->whereNull('beginned_at')->recentTask()->paginate(15);
  
          return view('user.tache.a_venir', [
-             'taches' => $taches
+             'tasks' => $tasks
          ]);
      }
  
@@ -122,12 +122,12 @@ class TaskController extends Controller
  
  
  
-         $tachesTerminees = $user->taches()->whereNotNull('finished_at')->orderBy('finished_at', 'asc')->paginate(15);
+         $tasks = $user->taches()->whereNotNull('beginned_at')->whereNotNull('finished_at')->paginate(15);
  
          return view('user.tache.terminees', [
  
              
-             'taches' => $tachesTerminees
+             'tasks' => $tasks
          ]);
      }
  
@@ -138,7 +138,7 @@ class TaskController extends Controller
  
          $tache->save();
  
-         return back()->with('success', 'Tache: '.$tache->name . ' marquée comme terminée');
+         return back();
      }
  
      public function marqueToBegin  ($id){

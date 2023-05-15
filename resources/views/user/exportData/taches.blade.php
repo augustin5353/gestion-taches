@@ -5,7 +5,13 @@
 @endsection
 
 @section('content')
-<h1>@yield('title')</h1>
+<div class="container-xxl">
+    
+    <div class=" text-center my-5">
+        <h3 class="text-info">@yield('title')</h3>
+    </div>
+    
+    
 
 {{-- <div class="d-flex justify-content-between">
     <div><a href="{{ route('export.tache.pdf')}}">Télécharger le pdf</a></div>
@@ -59,4 +65,5 @@
       </button>
   </div>
 </form>
+</div>
 @endsection
