@@ -10,10 +10,10 @@
         <h3 class="mb-20 mt-lg-n1 text-info">@yield('title')</h3>
     </div>
 
-    <form class="vstack gap-3" action="{{ route('taches.store') }}" method="post" enctype="multipart/form-data">
+    <form class="vstack gap-3" action="{{ route($tache->id !== null ? 'taches.update' : 'taches.store', ['tach' => $tache, 'group' => $group]) }}" method="post" enctype="multipart/form-data">
 
         @csrf
-        @method('post')
+        @method($tache->id !== null ? 'put' : 'post')
 
         @include('shared.input', [
             'name' => 'name',
@@ -43,32 +43,38 @@
                 'label' => 'Date fin',
                 'value' => $tache->finish_at,
         ])
+        @include('shared.input', [
+                'name' => 'group_id',
+                'label' => '',
+                'type' => 'hidden',
+                'value' => $group,
+        ])
 
         
         <div class="form-group form-check-inline">
             <label for="" class="mr-5">Recevoir de notification pour cette tache</label>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="notifiable" id="immediate" value={{1}} checked>
+                <input class="form-check-input" type="radio" name="notifiable" id="oui" value={{1}} @checked($tache->notifiable === 1)>
                 <label class="form-check-label" for="oui">Oui</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="notifiable" id="non" value={{0 }}>
+                <input class="form-check-input" type="radio" name="notifiable" id="non" value={{0 }} @checked($tache->notifiable === 0)>
                 <label class="form-check-label" for="non">Non</label>
             </div>
         </div>
         <div class="form-group form-check-inline">
             <label for="" class="mr-5">Niveau</label>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="level" id="immediate" value="immediate" @checked($tache->level == 'high')>
-                <label class="form-check-label" for="immediate">Urgent</label>
+                <input class="form-check-input" type="radio" name="level" id="high" value={{"high"}} @checked($tache->level == 'high')>
+                <label class="form-check-label" for="high">High</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="level" id="important" value="important" @checked($tache->level == 'medium') @checked($tache->id == null)>
-                <label class="form-check-label" for="important">Important</label>
+                <input class="form-check-input" type="radio" name="level" id="medium" value={{"medium" }} @checked($tache->level == 'medium') @checked($tache->id == null)>
+                <label class="form-check-label" for="medium">Medium</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="level" id="lower" value="low" @checked($tache->level == 'low')>
-                <label class="form-check-label" for="lower">Pas urgent</label>
+                <input class="form-check-input" type="radio" name="level" id="low" value={{"low"}} @checked($tache->level == 'low')>
+                <label class="form-check-label" for="low">Low</label>
             </div>
         </div>
 

@@ -28,6 +28,9 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/group.css'])
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
 
 </head>
 <body>
@@ -47,7 +50,7 @@
               text-green-600
                 @else
               text-white
-              @endif"  href="{{ route('taches.create') }}">Nouvelle tache</a>
+              @endif"  href="{{ route('taches.create', ['group' => null]) }}">Nouvelle tache</a>
             </li>
             <li class="nav-item">
               <a href="{{ route('group.index') }}" class="nav-link @if(str_contains($route, 'group.'))

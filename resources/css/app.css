@@ -13,3 +13,9 @@ body {
 a {
     text-decoration: none !important;
   }
+
+.separator {
+    border-left: 1px solid black; /* Ajoute une bordure de 1 pixel solide à gauche */
+    height: 100%; /* Ajuste la hauteur du trait */
+    margin-left: 10px; /* Ajoute une marge à gauche pour l'espacement */
+}

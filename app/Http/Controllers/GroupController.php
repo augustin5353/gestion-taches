@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Group;
+use App\Notifications\NotificationUserToJoinGroup;
+use Illuminate\Http\Request;
 use App\Events\JoinGroupEvent;
 use App\Http\Requests\GroupRequest;
-use App\Models\Group;
-use App\Models\User;
+use App\Http\Requests\SearchUserRequest;
 use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
@@ -15,7 +18,8 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = Group::paginate(15);
+
+        $groups = Group::with('user')->where('user_id', Auth::id())->get();
 
         return view('group.index', [
             'groups' => $groups
@@ -28,7 +32,7 @@ class GroupController extends Controller
      */
     public function create()
     {
-        return view('group.edit', ['group' => new Group()]);
+        return view('group.edit');
     }
 
     /**
@@ -63,9 +67,24 @@ class GroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Group $group)
+    public function edit($group, SearchUserRequest $request)
     {
-        return view('group.edit', ['group' => $group]);
+
+        $query = User::query()->orderBy('name');
+
+        if($request->validated('name'))
+        {
+            $query = $query->where('name', 'like', "%{$request->validated('name')}%");
+        }
+
+        $group = Group::findOrFail($group);
+
+
+        return view('group.edit', [
+            'group' => $group,
+            'addUsers' => $query->paginate(15),
+            'input' => $request->validated()
+        ]);
     }
 
     /**
@@ -86,15 +105,26 @@ class GroupController extends Controller
         //
     }
 
-    public function addUser($group, $user){
+    public function sendNotificationToUserToJoinGroup($group, $user){
 
         $group = Group::find($group);
 
-        $user = User::find($user);
+        $user = User::findOrFail($user);
 
-        event(new JoinGroupEvent($group, $user));
+        $user->notify(new NotificationUserToJoinGroup($group, $user));
 
-        dd('ok');
+        dd("ok");
+
+    }
+    public function actionOnUserResponseToJoinGroupNotification($group, $user){
+
+        $group = Group::find($group);
+
+        $group->users()->toggle([$user]);
+
+        return to_route('group.edit', [
+            'group' => $group->id
+        ]);
 
     }
 }

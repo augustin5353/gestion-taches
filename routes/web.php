@@ -28,10 +28,19 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::resource('/taches', TaskController::class)->middleware('auth')->except(['show']);
+Route::resource('/taches', TaskController::class)->middleware('auth')->except(['show', 'edit', 'store']);
+
+Route::post('/taches{group?}', [TaskController::class, 'store'])->middleware('auth')->name('taches.store');
+
+Route::get('/taches/{task}/{group?}edit', [TaskController::class, 'edit'])->middleware('auth')->name('taches.edit');
+
+Route::get('/taches/create/{group?}', [TaskController::class, 'create'])->middleware('auth')->where('group', '([0-9/]+)?')->name('taches.create');
 
 Route::resource('/group', GroupController::class)->middleware('auth')->except(['show']);
-Route::post('/group/{group}/{user}', [GroupController::class, 'addUser'])->middleware('auth')->name('group.add.user');
+
+Route::post('/group/{group}/{user}', [GroupController::class, 'sendNotificationToUserToJoinGroup'])->middleware('auth')->name('notify.user.to.join.group');
+Route::get('/group/{group}/{user}', [GroupController::class, 'actionOnUserResponseToJoinGroupNotification'])->middleware('auth')->name('action.response.notification.user.to.join.group');
+
 
 Route::prefix('/taches')->name('taches.')->middleware('auth')->group(function(){
 

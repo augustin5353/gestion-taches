@@ -33,7 +33,7 @@
                 
                 <div class="d-flex align-items-center justify-content-md-start gap-2 card-footer">
                   
-                    <a href="{{ route('taches.edit', ['tach' => $task->id ]) }}" class="btn btn-primary btn-sm">Editer</a>
+                    <a href="{{ route('taches.edit', ['task' => $task->id ]) }}" class="btn btn-primary btn-sm">Editer</a>
                     {{-- Pour vérifier si l'utilisateur a le droit avant d'afficher le bouton --}}
 
                       <form action="{{ route('taches.destroy', $task->id) }}" method="post">

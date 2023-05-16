@@ -38,7 +38,7 @@
                         <div class="d-flex gap-2 w-100 justify-content-end">
                             {{-- Pour vérifier si l'utilisateur a le droit avant d'afficher le bouton --}}
     
-                            <a href="{{ route('taches.edit', ['tach' => $tache->id ]) }}" class="btn btn-primary">Détails</a>
+                            <a href="{{ route('taches.edit', ['task' => $tache->id ]) }}" class="btn btn-primary">Détails</a>
     
                               <form action="{{ route('taches.destroy', $tache->id) }}" method="post">
                                     @csrf

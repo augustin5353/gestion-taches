@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -120,8 +121,6 @@ class TaskController extends Controller
  
          $user = User::find(Auth::id());
  
- 
- 
          $tasks = $user->taches()->whereNotNull('beginned_at')->whereNotNull('finished_at')->paginate(15);
  
          return view('user.tache.terminees', [
@@ -164,47 +163,37 @@ class TaskController extends Controller
      /**
       * Show the form for creating a new resource.
       */
-     public function create()
+     public function create($group = null)
      {
-         
-         return view('user.tache.edit', [
-             'tache' => new Task()
+
+        return view('user.tache.edit', [
+             'tache' => new Task(),
+             'group' => $group,
          ]);
      }
  
      /**
       * Store a newly created resource in storage.
       */
-     public function store(CreateTacheRequest $request, Task $tache)
+     public function store(CreateTacheRequest $request, $group = null ) 
      {
- 
-         $id = Auth::id();
- 
-         $data = [
-             'name' => $request->validated('name'),
-             'description' => $request->validated('description'),
-             'begin_at' => $request->validated('begin_at'),
-             'finish_at' => $request->validated('finish_at'),
-             'beginned_at' => $request->input('beginned_at'),
-             'finishes_at' => $request->input('finishes_at'),
-             'notifiable' => $request->input('notifiable'),
-             'user_id' => $id
-         ];
- 
-         if($tache->id == null){
- 
-             $tache = Task::create($data);
-             $tache->user()->associate($id);
-             $tache->save();
-             return to_route('taches.index')->with('success', 'Tache crée avec succès');
- 
-         }else
-         {
-             $tache->update($data);
-             return to_route('taches.index')->with('success', 'Tache modifiée avec succès');
-         }
- 
-         
+
+
+
+            $id = Auth::id();
+
+             $task = Task::create($request->validated());
+
+             //on associe l'utilisateur actuellment connecté
+             $task->user()->associate($id);
+
+             // l'auteur du group
+             $task->group()->associate($request->validated('group_id'));
+
+             $task->save();
+
+             return to_route('group.index')->with('success', 'Tache crée avec succès');
+
      }
  
      /**
@@ -220,20 +209,40 @@ class TaskController extends Controller
      /**
       * Show the form for editing the specified resource.
       */
-     public function edit( $tache)
+     public function edit(Task $task, $group = new Group())
      {
-         $tache = Task::find($tache);
+
          return view('user.tache.edit', [
-             'tache' => $tache
+             'tache' => $task,
+             'group' => $group
          ]);
      }
  
      /**
       * Update the specified resource in storage.
       */
-     public function update(Request $request, Task $tache)
+     public function update(CreateTacheRequest $request, $task)
      {
-         //
+
+        $task = Task::findOrFail($task);
+
+        //dd($request->validated());
+
+        
+        $task->update($request->validated());
+
+        $task->level = $request->validated('level');
+
+        $task->save();
+
+         if($task->group)
+         {
+            return to_route('group.edit', [
+                'group' => $task->group
+            ])->with('success', 'tache modifiée avec succès');
+         }
+         
+         return to_route('taches.index')->with('success', 'tache modifiée avec succès');
      }
  
      /**
@@ -242,9 +251,21 @@ class TaskController extends Controller
      public function destroy($tache)
      {
          $tache = Task::find($tache);
- 
+
+         if($tache->group_id)
+         {
+            $group = $tache->group_id;
+            $tache->delete();
+            return to_route('group.edit', [
+                'group' => $group
+            ])->with('Suppression effectuée avec succès');
+         }
+
          $tache->delete();
- 
+
          return to_route('taches.index')->with('Suppression effectuée avec succès');
+ 
+         
+
      }
 }

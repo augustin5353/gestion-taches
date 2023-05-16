@@ -49,6 +49,9 @@ class User extends Authenticatable
     public function taches(){
         return $this->hasMany(Task::class);
     }
+    public function adminGgroups(){
+        return $this->hasMany(Task::class);
+    }
     
 
     public function groups(){

@@ -33,7 +33,11 @@ class Task extends Model
 
     public function groups()
     {
-        return $this->belongsToMany(Task::class);
+        return $this->belongsToMany(Group::class);
+    }
+    public function group()
+    {
+        return $this->belongsTo(Task::class);
     }
 
     public function getDate(string $date){
