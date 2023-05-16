@@ -113,7 +113,9 @@ class GroupController extends Controller
 
         $user->notify(new NotificationUserToJoinGroup($group, $user));
 
-        dd("ok");
+        return to_route('group.edit', [
+            'group' => $group
+        ]);
 
     }
     public function actionOnUserResponseToJoinGroupNotification($group, $user){
@@ -121,6 +123,17 @@ class GroupController extends Controller
         $group = Group::find($group);
 
         $group->users()->toggle([$user]);
+
+        return to_route('group.edit', [
+            'group' => $group->id
+        ]);
+
+    }
+    public function removeUserFromGroup($group, $user){
+
+        $group = Group::find($group);
+
+        $group->users()->detach([$user]);
 
         return to_route('group.edit', [
             'group' => $group->id

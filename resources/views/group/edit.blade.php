@@ -42,8 +42,8 @@
                     </div>
             </form>
 
-            <p class="text-center mt-5">
-                rechercehr d'utilisateur pour en ajouter
+            <p class="text-start">
+                Rechercehr d'utilisateur pour en ajouter
             </p>
 
             <form action="" method="get" class="container d-flex gap-2">
@@ -137,13 +137,43 @@
                 </table>
             </div>
         </div>
-        <div class="col"></div>
+        <div class="col mt-4">
+            <div>
+                <div class="d-flex p-2 bd-highlight justify-between">
+                    <h5>Les membres</h5>
+                </div>
+                <div>
+                    <table class="table table.striped">
+                        <thead>
+                            <tr>
+    
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <tr>
+                                @forelse ($group->users as $user)
+                                <td>{{ $user->name}}</td>
+                                <td>{{ $user->email}}</td>  
+                                <td>
+                                    <a href="{{ route('group.remove.user', ['group' => $group, 'user' => $user])}}">Retirer</a>
+                                </td>
+                            </tr>
+                                
+                            @empty
+                                
+                            @endforelse
+                        </tbody>
+                    </table>
+                
+                </div>
+
+                
+            </div>
+                
+        </div>
       
     </div>
-      
-    
-
-    
 </div>
-    
+      
 @endsection

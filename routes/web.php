@@ -4,6 +4,7 @@ use App\Http\Controllers\ExportDataController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
+use App\Models\Group;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,10 +32,9 @@ Route::middleware('auth')->group(function () {
 Route::resource('/taches', TaskController::class)->middleware('auth')->except(['show', 'edit', 'store']);
 
 Route::post('/taches{group?}', [TaskController::class, 'store'])->middleware('auth')->name('taches.store');
-
 Route::get('/taches/{task}/{group?}edit', [TaskController::class, 'edit'])->middleware('auth')->name('taches.edit');
-
 Route::get('/taches/create/{group?}', [TaskController::class, 'create'])->middleware('auth')->where('group', '([0-9/]+)?')->name('taches.create');
+Route::get('/taches/remove/{group}/{user}', [GroupController::class, 'removeUserFromGroup'])->middleware('auth')->name('group.remove.user');
 
 Route::resource('/group', GroupController::class)->middleware('auth')->except(['show']);
 
