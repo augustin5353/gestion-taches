@@ -35,20 +35,50 @@ class Task extends Model
     {
         return $this->belongsToMany(Group::class);
     }
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
     public function group()
     {
         return $this->belongsTo(Task::class);
     }
 
-    public function getDate(string $date){
+    public function getDate(string $date)
+    {
         
 
         $date = Carbon::parse($date);   
 
         return $date->translatedFormat('d F Y H:i');
     }
-    public function parseDateInCarbon(string $date){
+    public function parseDateInCarbon(string $date)
+    {
         return Carbon::parse($date);
+    }
+
+    public function getTaskStatus()
+    {
+        $begin_at = $this->begin_at;
+        $finish_at = $this->finish_at;
+        $beginned_at = $this->beginned_at;
+        $finished_at = $this->finished_at;
+
+        $status = '';
+        if($beginned_at !== null && $finished_at === null)
+        {
+            $status = 'En cours';
+        }
+        elseif($beginned_at !== null && $finished_at !== null)
+        {
+            $status = 'Terminée';
+        }
+        elseif($beginned_at === null)
+        {
+            $status = 'Non démarrée';
+        }
+
+        return $status;
     }
 
     public function scopeRecentTask(Builder $builder, ?string $column = null)
@@ -72,4 +102,5 @@ class Task extends Model
         }
         
     }
+
 }

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Events\JoinGroupEvent;
 use App\Http\Requests\GroupRequest;
 use App\Http\Requests\SearchUserRequest;
+use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
@@ -83,7 +84,7 @@ class GroupController extends Controller
         return view('group.edit', [
             'group' => $group,
             'addUsers' => $query->paginate(15),
-            'input' => $request->validated()
+            'input' => $request->validated(),
         ]);
     }
 
@@ -138,6 +139,21 @@ class GroupController extends Controller
         return to_route('group.edit', [
             'group' => $group->id
         ]);
+
+    }
+    public function attachTaskUsersInGroup($task, Request $request){
+
+        $validated = $request->validate([
+            'users' => 'required|array|exists:users,id'
+        ]);
+
+
+
+        $task = Task::findOrFail($task);
+
+       $task->users()->toggle($validated['users']);
+
+       return back()->with('success', 'Tache confiée avec succès');
 
     }
 }

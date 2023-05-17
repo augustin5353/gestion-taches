@@ -5,7 +5,7 @@
 
 @section('content')
 
-<div class="ml-3 mt-3 mr-3 mb-3">
+<div class=" container-fluid my-5 mr-10 ml-auto">
   @include('group.groupCard')
 </div>
 

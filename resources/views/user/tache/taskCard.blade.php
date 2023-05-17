@@ -9,8 +9,8 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="">  
-                  @if ($route == 'taches.terminees') Date fin: {{ $task->getDate($task->finished_at)}}
-                  @elseif ($route == 'taches.en_cours') Date démarrage: {{ $task->getDate($task->beginned_at)}}
+                  @if ($route == 'taches.terminees') Date Démarrage:  {{ $task->getDate($task->beginned_at)}}
+                  @elseif ($route == 'taches.en_cours') Deadline:  {{ $task->getDate($task->finish_at)}}
                   @elseif ($route == 'taches.a_venir') Démarre le: {{ $task->getDate($task->begin_at)}}
                   @else
                   Démarre normalement: {{ $task->getDate($task->begin_at)}}
@@ -20,8 +20,8 @@
                 <div class="d-flex  justify-content-between ">
                     <p class="card-text">
                       <small class="text-muted">
-                      @if ($route == 'taches.terminees') Date Démarrage:  {{ $task->getDate($task->beginned_at)}}
-                      @elseif ($route == 'taches.en_cours') A terminer avant:  {{ $task->getDate($task->finish_at)}}
+                      @if ($route == 'taches.terminees') Date fin: {{ $task->getDate($task->finished_at)}}
+                      @elseif ($route == 'taches.en_cours') Date démarrage: {{ $task->getDate($task->beginned_at)}}
                       @elseif ($route == 'taches.a_venir') Termine le:   {{ $task->getDate($task->finish_at)}}
                       @else
                       Finie normalement:  {{ $task->getDate($task->finish_at)}}
@@ -33,7 +33,7 @@
                 
                 <div class="d-flex align-items-center justify-content-md-start gap-2 card-footer">
                   
-                    <a href="{{ route('taches.edit', ['task' => $task->id ]) }}" class="btn btn-primary btn-sm">Editer</a>
+                    <a href="{{ route('taches.edit', ['group'=>null,  'task' => $task]) }}" class="btn btn-primary btn-sm">Editer</a>
                     {{-- Pour vérifier si l'utilisateur a le droit avant d'afficher le bouton --}}
 
                       <form action="{{ route('taches.destroy', $task->id) }}" method="post">

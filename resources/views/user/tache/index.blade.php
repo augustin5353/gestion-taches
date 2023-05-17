@@ -16,10 +16,11 @@ $route = request()->route()->getName();
 <div class=" text-start mt-5">
 <h3 class="text-info">Toutes vos taches</h3>
 </div>
+
 @include('user.tache.taskCard')
 
 
-<div>
+<div class=" my-5">
 {{ $tasks->links() }}
 </div>
 </div>

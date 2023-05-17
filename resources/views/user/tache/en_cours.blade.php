@@ -13,7 +13,9 @@
 </div>
 @include('user.tache.taskCard')
 
-{{ $tasks->links() }}
+<div class=" my-5">
+    {{ $tasks->links() }}
+</div>
     
 </div>
 @endsection

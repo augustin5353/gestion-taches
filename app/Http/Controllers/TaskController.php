@@ -92,7 +92,7 @@ class TaskController extends Controller
  
  
  
-         $tasks = $user->taches()->whereNotNull('beginned_at')->whereNull('finished_at')->recentTask()->paginate(15);
+         $tasks = $user->taches()->whereNotNull('beginned_at')->whereNull('finished_at')->whereDate('finish_at', '>=', now())->recentTask()->paginate(15);
  
          return view('user.tache.en_cours', [
              'tasks' => $tasks
@@ -137,7 +137,7 @@ class TaskController extends Controller
  
          $tache->save();
  
-         return back();
+         return back()->with('success', 'Tache marquée comme Terminée');
      }
  
      public function marqueToBegin  ($id){
@@ -147,7 +147,7 @@ class TaskController extends Controller
  
          $tache->save();
  
-         return back()->with('success', 'Tache: '.$tache->name . ' démarrée');
+         return back();
      }
  
      public function setNotifiableColumn($tache){
@@ -192,7 +192,14 @@ class TaskController extends Controller
 
              $task->save();
 
-             return to_route('group.index')->with('success', 'Tache crée avec succès');
+            if($group !== null)
+            {
+                return to_route('group.edit', [
+                    'group' => $group
+                ])->with('success', 'tache modifiée avec succès');
+            }
+
+            return to_route('taches.index')->with('success', 'Tache créée avec succès');;
 
      }
  
@@ -242,7 +249,7 @@ class TaskController extends Controller
             ])->with('success', 'tache modifiée avec succès');
          }
          
-         return to_route('taches.index')->with('success', 'tache modifiée avec succès');
+         return to_route('taches.index');
      }
  
      /**
@@ -263,9 +270,6 @@ class TaskController extends Controller
 
          $tache->delete();
 
-         return to_route('taches.index')->with('Suppression effectuée avec succès');
- 
-         
-
+         return to_route('taches.index')->with('success', 'Tache supprimée avec succès');
      }
 }

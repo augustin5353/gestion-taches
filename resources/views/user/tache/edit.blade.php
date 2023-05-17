@@ -42,6 +42,7 @@
                 'type' => 'datetime-local',
                 'label' => 'Date fin',
                 'value' => $tache->finish_at,
+                'class' => 'div'
         ])
         @include('shared.input', [
                 'name' => 'group_id',
@@ -51,30 +52,34 @@
         ])
 
         
-        <div class="form-group form-check-inline">
-            <label for="" class="mr-5">Recevoir de notification pour cette tache</label>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="notifiable" id="oui" value={{1}} @checked($tache->notifiable === 1)>
-                <label class="form-check-label" for="oui">Oui</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="notifiable" id="non" value={{0 }} @checked($tache->notifiable === 0)>
-                <label class="form-check-label" for="non">Non</label>
+        <div>
+            <div class="form-group form-check-inline mb-3 ">
+                <label for="" class=" form-label">Recevoir de notification pour cette tache</label>
+                <div class="form-check form-check-inline ">
+                    <input class="form-check-input " type="radio" name="notifiable" id="oui" value={{1}} @checked($tache->notifiable === 1) @checked($tache->id === null)>
+                    <label class="form-check-label  m-lg-n4" for="oui">Oui</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="notifiable" id="non" value={{0 }} @checked($tache->notifiable === 0)>
+                    <label class="form-check-label" for="non">Non</label>
+                </div>
             </div>
         </div>
-        <div class="form-group form-check-inline">
-            <label for="" class="mr-5">Niveau</label>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="level" id="high" value={{"high"}} @checked($tache->level == 'high')>
-                <label class="form-check-label" for="high">High</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="level" id="medium" value={{"medium" }} @checked($tache->level == 'medium') @checked($tache->id == null)>
-                <label class="form-check-label" for="medium">Medium</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="level" id="low" value={{"low"}} @checked($tache->level == 'low')>
-                <label class="form-check-label" for="low">Low</label>
+        <div>
+            <div class="form-group form-check-inline mb-3">
+                <label for="" class="mr-5">Niveau</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="level" id="high" value={{"high"}} @checked($tache->level == 'high')>
+                    <label class="form-check-label" for="high">High</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="level" id="medium" value={{"medium" }} @checked($tache->level == 'medium') @checked($tache->id == null)>
+                    <label class="form-check-label" for="medium">Medium</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="level" id="low" value={{"low"}} @checked($tache->level == 'low')>
+                    <label class="form-check-label" for="low">Low</label>
+                </div>
             </div>
         </div>
 
@@ -116,7 +121,8 @@
         </div>
 
 
-            <button class="btn btn-primary mb-5">
+            <div class="text-end">
+                <button class="btn btn-primary" >
 
                     @if ($tache->id == null )
                         Créer
@@ -124,6 +130,7 @@
                         Modifier
                     @endif
             </button>
+            </div>
     </form>
 
     <script>
